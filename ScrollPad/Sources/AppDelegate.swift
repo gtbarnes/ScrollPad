@@ -5,8 +5,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     private var mainWindowController: MainWindowController?
     private var statusItem: NSStatusItem?
-    private var globalMonitor: Any?
-    private var localMonitor: Any?
+    private var eventTap: CFMachPort?
+    private var runLoopSource: CFRunLoopSource?
 
     /// Set to true while SettingsView is recording a hotkey, to suppress the global hotkey
     static var suppressHotkey = false
@@ -14,9 +14,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
         print("App launched")
 
-        // Check for accessibility permissions
         checkAccessibilityPermissions()
-
         setupStatusItem()
         setupGlobalHotkey()
         setupSettingsObservers()
@@ -34,7 +32,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         if !accessEnabled {
             print("Accessibility access not granted - hotkeys may not work until enabled")
 
-            // Show alert to user
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                 let alert = NSAlert()
                 alert.messageText = "Accessibility Permission Required"
@@ -51,7 +48,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func applicationWillTerminate(_ notification: Notification) {
-        removeHotkeyMonitors()
+        removeEventTap()
     }
 
     // MARK: - Status Item (Menu Bar)
@@ -84,69 +81,123 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
 
-    // MARK: - Global Hotkey (NSEvent monitors)
+    // MARK: - Global Hotkey (CGEvent tap)
 
     private func setupGlobalHotkey() {
-        removeHotkeyMonitors()
+        removeEventTap()
 
-        let targetKeyCode = UInt16(Settings.shared.hotkeyKeyCode)
-        let targetModifiers = carbonToCocoaModifiers(Settings.shared.hotkeyModifiers)
+        let targetKeyCode = Settings.shared.hotkeyKeyCode
+        let targetCarbonModifiers = Settings.shared.hotkeyModifiers
 
-        print("Setting up hotkey monitors: keyCode=\(targetKeyCode), modifiers=\(Settings.shared.hotkeyModifiers)")
+        print("Setting up CGEvent tap: keyCode=\(targetKeyCode), modifiers=\(targetCarbonModifiers)")
 
-        // Global monitor: fires when another app is active
-        globalMonitor = NSEvent.addGlobalMonitorForEvents(matching: .keyDown) { [weak self] event in
-            if self?.eventMatchesHotkey(event, keyCode: targetKeyCode, modifiers: targetModifiers) == true {
-                print("Global hotkey fired")
-                DispatchQueue.main.async {
-                    self?.toggleMainWindow()
+        // Store hotkey config in a context struct so the C callback can access it
+        let context = HotkeyContext(keyCode: targetKeyCode, modifiers: targetCarbonModifiers)
+        let contextPtr = UnsafeMutablePointer<HotkeyContext>.allocate(capacity: 1)
+        contextPtr.initialize(to: context)
+
+        let eventMask: CGEventMask = (1 << CGEventType.keyDown.rawValue)
+
+        guard let tap = CGEvent.tapCreate(
+            tap: .cgSessionEventTap,
+            place: .headInsertEventTap,
+            options: .defaultTap,
+            eventsOfInterest: eventMask,
+            callback: { (proxy, type, event, refcon) -> Unmanaged<CGEvent>? in
+                // If the tap is disabled by the system, re-enable it
+                if type == .tapDisabledByTimeout || type == .tapDisabledByUserInput {
+                    if let refcon = refcon {
+                        let ctx = refcon.assumingMemoryBound(to: HotkeyContext.self).pointee
+                        // Post notification to re-enable on main thread
+                        DispatchQueue.main.async {
+                            NotificationCenter.default.post(name: .reEnableEventTap, object: nil)
+                        }
+                    }
+                    return Unmanaged.passRetained(event)
                 }
-            }
-        }
 
-        // Local monitor: fires when this app is active
-        localMonitor = NSEvent.addLocalMonitorForEvents(matching: .keyDown) { [weak self] event in
-            if self?.eventMatchesHotkey(event, keyCode: targetKeyCode, modifiers: targetModifiers) == true {
-                print("Local hotkey fired")
-                DispatchQueue.main.async {
-                    self?.toggleMainWindow()
+                guard type == .keyDown else {
+                    return Unmanaged.passRetained(event)
                 }
-                return nil // Consume the event
-            }
-            return event
+
+                guard !AppDelegate.suppressHotkey else {
+                    return Unmanaged.passRetained(event)
+                }
+
+                guard let refcon = refcon else {
+                    return Unmanaged.passRetained(event)
+                }
+
+                let ctx = refcon.assumingMemoryBound(to: HotkeyContext.self).pointee
+                let keyCode = UInt32(event.getIntegerValueField(.keyboardEventKeycode))
+                let flags = event.flags
+
+                guard keyCode == ctx.keyCode else {
+                    return Unmanaged.passRetained(event)
+                }
+
+                // Check modifiers match
+                var targetFlags = CGEventFlags()
+                if ctx.modifiers & UInt32(cmdKey) != 0 { targetFlags.insert(.maskCommand) }
+                if ctx.modifiers & UInt32(shiftKey) != 0 { targetFlags.insert(.maskShift) }
+                if ctx.modifiers & UInt32(optionKey) != 0 { targetFlags.insert(.maskAlternate) }
+                if ctx.modifiers & UInt32(controlKey) != 0 { targetFlags.insert(.maskControl) }
+
+                let significantMask: CGEventFlags = [.maskCommand, .maskShift, .maskAlternate, .maskControl]
+                let eventMods = flags.intersection(significantMask)
+
+                if eventMods == targetFlags {
+                    DispatchQueue.main.async {
+                        (NSApp.delegate as? AppDelegate)?.toggleMainWindow()
+                    }
+                    // Return nil to consume the event (prevent the beep)
+                    return nil
+                }
+
+                return Unmanaged.passRetained(event)
+            },
+            userInfo: contextPtr
+        ) else {
+            print("Failed to create CGEvent tap - accessibility permission may be needed")
+            contextPtr.deallocate()
+            return
         }
 
-        print("Hotkey monitors installed")
+        eventTap = tap
+
+        let source = CFMachPortCreateRunLoopSource(kCFAllocatorDefault, tap, 0)
+        runLoopSource = source
+        CFRunLoopAddSource(CFRunLoopGetCurrent(), source, .commonModes)
+        CGEvent.tapEnable(tap: tap, enable: true)
+
+        // Listen for re-enable requests
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(reEnableEventTap),
+            name: .reEnableEventTap,
+            object: nil
+        )
+
+        print("CGEvent tap installed and enabled")
     }
 
-    private func eventMatchesHotkey(_ event: NSEvent, keyCode: UInt16, modifiers: NSEvent.ModifierFlags) -> Bool {
-        guard !AppDelegate.suppressHotkey else { return false }
-        guard event.keyCode == keyCode else { return false }
-        // Compare only the modifier keys we care about (cmd, shift, option, control)
-        let significantFlags: NSEvent.ModifierFlags = [.command, .shift, .option, .control]
-        let eventMods = event.modifierFlags.intersection(significantFlags)
-        let targetMods = modifiers.intersection(significantFlags)
-        return eventMods == targetMods
-    }
-
-    private func carbonToCocoaModifiers(_ carbonModifiers: UInt32) -> NSEvent.ModifierFlags {
-        var flags = NSEvent.ModifierFlags()
-        if carbonModifiers & UInt32(cmdKey) != 0 { flags.insert(.command) }
-        if carbonModifiers & UInt32(shiftKey) != 0 { flags.insert(.shift) }
-        if carbonModifiers & UInt32(optionKey) != 0 { flags.insert(.option) }
-        if carbonModifiers & UInt32(controlKey) != 0 { flags.insert(.control) }
-        return flags
-    }
-
-    private func removeHotkeyMonitors() {
-        if let monitor = globalMonitor {
-            NSEvent.removeMonitor(monitor)
-            globalMonitor = nil
+    @objc private func reEnableEventTap() {
+        if let tap = eventTap {
+            CGEvent.tapEnable(tap: tap, enable: true)
+            print("Re-enabled event tap")
         }
-        if let monitor = localMonitor {
-            NSEvent.removeMonitor(monitor)
-            localMonitor = nil
+    }
+
+    private func removeEventTap() {
+        if let source = runLoopSource {
+            CFRunLoopRemoveSource(CFRunLoopGetCurrent(), source, .commonModes)
+            runLoopSource = nil
         }
+        if let tap = eventTap {
+            CGEvent.tapEnable(tap: tap, enable: false)
+            eventTap = nil
+        }
+        NotificationCenter.default.removeObserver(self, name: .reEnableEventTap, object: nil)
     }
 
     // MARK: - Settings Observers
@@ -203,4 +254,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             showMainWindow()
         }
     }
+}
+
+// MARK: - Supporting types
+
+private struct HotkeyContext {
+    let keyCode: UInt32
+    let modifiers: UInt32
+}
+
+extension Notification.Name {
+    static let reEnableEventTap = Notification.Name("reEnableEventTap")
 }
