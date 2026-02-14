@@ -169,28 +169,36 @@ class ScrollPadTextView: NSTextView {
     }
     
     private func sendToAppleNotes(title: String, body: String) {
-        let escapedTitle = title.replacingOccurrences(of: "\"", with: "\\\"")
-        let escapedBody = body.replacingOccurrences(of: "\"", with: "\\\"").replacingOccurrences(of: "\n", with: "\\n")
-        
+        let escapedTitle = title.replacingOccurrences(of: "\\", with: "\\\\")
+            .replacingOccurrences(of: "\"", with: "\\\"")
+        let escapedBody = body.replacingOccurrences(of: "\\", with: "\\\\")
+            .replacingOccurrences(of: "\"", with: "\\\"")
+            .replacingOccurrences(of: "\n", with: "\\n")
+
         let script = """
         tell application "Notes"
-            tell account "iCloud"
-                make new note at folder "Notes" with properties {name:"\(escapedTitle)", body:"\(escapedBody)"}
-            end tell
+            activate
+            make new note with properties {name:"\(escapedTitle)", body:"\(escapedBody)"}
         end tell
         """
-        
-        var error: NSDictionary?
-        if let appleScript = NSAppleScript(source: script) {
-            appleScript.executeAndReturnError(&error)
-            
-            if let error = error {
-                let alert = NSAlert()
-                alert.messageText = "Failed to Create Note"
-                alert.informativeText = "Error: \(error)"
-                alert.alertStyle = .warning
-                alert.addButton(withTitle: "OK")
-                alert.runModal()
+
+        // Run off the main thread to avoid beach-balling
+        DispatchQueue.global(qos: .userInitiated).async {
+            var error: NSDictionary?
+            if let appleScript = NSAppleScript(source: script) {
+                appleScript.executeAndReturnError(&error)
+
+                if let error = error {
+                    DispatchQueue.main.async {
+                        let alert = NSAlert()
+                        alert.messageText = "Failed to Create Note"
+                        let briefMsg = error["NSAppleScriptErrorBriefMessage"] as? String ?? "\(error)"
+                        alert.informativeText = briefMsg
+                        alert.alertStyle = .warning
+                        alert.addButton(withTitle: "OK")
+                        alert.runModal()
+                    }
+                }
             }
         }
     }
