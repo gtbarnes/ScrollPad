@@ -257,6 +257,7 @@ class SettingsView: NSView {
 
     @objc private func hotkeyFieldClicked() {
         isRecordingHotkey = true
+        AppDelegate.suppressHotkey = true
         hotkeyField.stringValue = "Waiting for input..."
         hotkeyField.backgroundColor = NSColor(white: 0.3, alpha: 1.0)
 
@@ -272,6 +273,7 @@ class SettingsView: NSView {
 
     private func stopRecording() {
         isRecordingHotkey = false
+        AppDelegate.suppressHotkey = false
         hotkeyField.backgroundColor = NSColor(white: 0.15, alpha: 1.0)
         if let monitor = localEventMonitor {
             NSEvent.removeMonitor(monitor)
