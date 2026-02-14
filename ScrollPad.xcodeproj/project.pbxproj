@@ -1,0 +1,349 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2D2DA0F97F5D776CD6129C1E /* ScrollPadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0733F95C53E1FE5C6533BDD /* ScrollPadViewController.swift */; };
+		3171C56966595C1ED4FDCBC2 /* NoteStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFEF4F7C60210FBE23A2468D /* NoteStorage.swift */; };
+		447469F06E5D3425A48D86B9 /* SettingsWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89397BFD41DA1277261124AA /* SettingsWindowController.swift */; };
+		486929F48718425C7EEAE2FD /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01F5EBE005ED3A5F60CA190F /* Settings.swift */; };
+		7F55F95CF4D94F673E0F1316 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6692156D2A34AD740D0CD2A9 /* main.swift */; };
+		821215603B0E05CD93D2EEDC /* MainWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD6FE392642EAF13E099BE4B /* MainWindowController.swift */; };
+		82153F0B30FAD255F3B268C5 /* ScrollPadTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DBE273CCD16A03C160E074C /* ScrollPadTextView.swift */; };
+		B71368E64B3F1C31723665B7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06DD8858968A3FA99D9E69C6 /* AppDelegate.swift */; };
+		79694371804A4AC2B43F296F /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E298A925E934AA3AFD72FA3 /* SettingsView.swift */; };
+		FD401AD8A86645A18284B6CC /* AppIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = A957EB421DA749FC8066E6D1 /* AppIcon.icns */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		01F5EBE005ED3A5F60CA190F /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		06DD8858968A3FA99D9E69C6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		3807D590C4CEDE21887A6B9E /* ScrollPad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ScrollPad.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4DBE273CCD16A03C160E074C /* ScrollPadTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollPadTextView.swift; sourceTree = "<group>"; };
+		6692156D2A34AD740D0CD2A9 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		810C887A0568AED4D1A363E8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		89397BFD41DA1277261124AA /* SettingsWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsWindowController.swift; sourceTree = "<group>"; };
+		C930FA315513478B96F731ED /* ScrollPad.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ScrollPad.entitlements; sourceTree = "<group>"; };
+		CFEF4F7C60210FBE23A2468D /* NoteStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteStorage.swift; sourceTree = "<group>"; };
+		DD6FE392642EAF13E099BE4B /* MainWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWindowController.swift; sourceTree = "<group>"; };
+		E0733F95C53E1FE5C6533BDD /* ScrollPadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollPadViewController.swift; sourceTree = "<group>"; };
+		8E298A925E934AA3AFD72FA3 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		A957EB421DA749FC8066E6D1 /* AppIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = AppIcon.icns; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		457ADE0A18D79953AF18C654 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				06DD8858968A3FA99D9E69C6 /* AppDelegate.swift */,
+				6692156D2A34AD740D0CD2A9 /* main.swift */,
+				DD6FE392642EAF13E099BE4B /* MainWindowController.swift */,
+				CFEF4F7C60210FBE23A2468D /* NoteStorage.swift */,
+				4DBE273CCD16A03C160E074C /* ScrollPadTextView.swift */,
+				E0733F95C53E1FE5C6533BDD /* ScrollPadViewController.swift */,
+				01F5EBE005ED3A5F60CA190F /* Settings.swift */,
+				89397BFD41DA1277261124AA /* SettingsWindowController.swift */,
+				8E298A925E934AA3AFD72FA3 /* SettingsView.swift */,
+			);
+			name = Sources;
+			path = ScrollPad/Sources;
+			sourceTree = "<group>";
+		};
+		9D483CBB4F689CACE119E9F0 = {
+			isa = PBXGroup;
+			children = (
+				A63381F456EE46C2537752F1 /* Resources */,
+				457ADE0A18D79953AF18C654 /* Sources */,
+				D0BD161CE785172BAA2F46B5 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A63381F456EE46C2537752F1 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				810C887A0568AED4D1A363E8 /* Info.plist */,
+				C930FA315513478B96F731ED /* ScrollPad.entitlements */,
+				A957EB421DA749FC8066E6D1 /* AppIcon.icns */,
+			);
+			name = Resources;
+			path = ScrollPad/Resources;
+			sourceTree = "<group>";
+		};
+		D0BD161CE785172BAA2F46B5 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				3807D590C4CEDE21887A6B9E /* ScrollPad.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		CD0AAD638926F4FE6263ECB7 /* ScrollPad */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BDA498E4C0F84DFC6057A3A1 /* Build configuration list for PBXNativeTarget "ScrollPad" */;
+			buildPhases = (
+				9E141061737745BDA835CEB5 /* Resources */,
+				DA381648EAF8DD6CE597D208 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ScrollPad;
+			packageProductDependencies = (
+			);
+			productName = ScrollPad;
+			productReference = 3807D590C4CEDE21887A6B9E /* ScrollPad.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		2435F61E59AF48D7E56E1021 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					CD0AAD638926F4FE6263ECB7 = {
+						ProvisioningStyle = Manual;
+					};
+				};
+			};
+			buildConfigurationList = 3D97942F3E77A9B1E4A7DBDF /* Build configuration list for PBXProject "ScrollPad" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 9D483CBB4F689CACE119E9F0;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				CD0AAD638926F4FE6263ECB7 /* ScrollPad */,
+			);
+		};
+/* End PBXProject section */
+
+
+/* Begin PBXResourcesBuildPhase section */
+		9E141061737745BDA835CEB5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FD401AD8A86645A18284B6CC /* AppIcon.icns in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		DA381648EAF8DD6CE597D208 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B71368E64B3F1C31723665B7 /* AppDelegate.swift in Sources */,
+				821215603B0E05CD93D2EEDC /* MainWindowController.swift in Sources */,
+				3171C56966595C1ED4FDCBC2 /* NoteStorage.swift in Sources */,
+				82153F0B30FAD255F3B268C5 /* ScrollPadTextView.swift in Sources */,
+				2D2DA0F97F5D776CD6129C1E /* ScrollPadViewController.swift in Sources */,
+				486929F48718425C7EEAE2FD /* Settings.swift in Sources */,
+				447469F06E5D3425A48D86B9 /* SettingsWindowController.swift in Sources */,
+				7F55F95CF4D94F673E0F1316 /* main.swift in Sources */,
+				79694371804A4AC2B43F296F /* SettingsView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		0C69EEBA6088BCB053804FA6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = ScrollPad;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.9;
+			};
+			name = Debug;
+		};
+		19A78FB543298FD13EF2F49F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = ScrollPad;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.9;
+			};
+			name = Release;
+		};
+		2956A1F31F30A927ED4D58D6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = ScrollPad/Resources/ScrollPad.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = ScrollPad/Resources/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.scrollpad.app;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		7F25F1E049E0939AADF6B121 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = ScrollPad/Resources/ScrollPad.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = ScrollPad/Resources/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.scrollpad.app;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		3D97942F3E77A9B1E4A7DBDF /* Build configuration list for PBXProject "ScrollPad" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0C69EEBA6088BCB053804FA6 /* Debug */,
+				19A78FB543298FD13EF2F49F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		BDA498E4C0F84DFC6057A3A1 /* Build configuration list for PBXNativeTarget "ScrollPad" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2956A1F31F30A927ED4D58D6 /* Debug */,
+				7F25F1E049E0939AADF6B121 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 2435F61E59AF48D7E56E1021 /* Project object */;
+}
