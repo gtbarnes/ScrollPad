@@ -98,6 +98,9 @@ class ScrollPadViewController: NSViewController, NSTextViewDelegate, SettingsVie
         // Set delegates
         textView.noteStorage = noteStorage
         textView.delegate = self
+
+        // Style dividers after loading
+        textView.refreshDividerStyling()
         
         scrollView.documentView = textView
         visualEffectView.addSubview(scrollView)

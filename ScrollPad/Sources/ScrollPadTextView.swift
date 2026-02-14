@@ -242,46 +242,90 @@ class ScrollPadTextView: NSTextView {
     }
     
     // MARK: - Drawing Section Dividers
-    
+
+    func refreshDividerStyling() {
+        styleDividerText()
+    }
+
+    override func didChangeText() {
+        super.didChangeText()
+        styleDividerText()
+    }
+
+    /// Make "---" divider text invisible so only the drawn line shows
+    private func styleDividerText() {
+        guard let textStorage = textStorage else { return }
+
+        let text = string as NSString
+        var searchRange = NSRange(location: 0, length: text.length)
+
+        // First, restore any previously-hidden text back to white
+        // (in case the user edited a divider away)
+        textStorage.addAttribute(.foregroundColor, value: NSColor.white, range: NSRange(location: 0, length: text.length))
+
+        while searchRange.location < text.length {
+            let foundRange = text.range(of: "---", options: [], range: searchRange)
+            if foundRange.location == NSNotFound { break }
+
+            // Only hide "---" that sits on its own line (possibly with surrounding whitespace)
+            var lineStart = 0
+            var lineEnd = 0
+            text.getLineStart(&lineStart, end: &lineEnd, contentsEnd: nil, for: foundRange)
+            let lineContent = text.substring(with: NSRange(location: lineStart, length: lineEnd - lineStart))
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+
+            if lineContent == "---" {
+                textStorage.addAttribute(.foregroundColor, value: NSColor.clear, range: foundRange)
+            }
+
+            searchRange.location = foundRange.location + foundRange.length
+            searchRange.length = text.length - searchRange.location
+        }
+    }
+
     override func draw(_ dirtyRect: NSRect) {
         super.draw(dirtyRect)
         drawSectionDividers()
     }
-    
+
     private func drawSectionDividers() {
         guard let layoutManager = layoutManager,
               let textContainer = textContainer else { return }
-        
-        let text = string as NSString
-        
-        var searchRange = NSRange(location: 0, length: text.length)
-        var foundRange = NSRange()
-        
-        let dividerText = "---"
-        
-        while searchRange.location < text.length {
-            foundRange = text.range(of: dividerText, options: [], range: searchRange)
-            
-            if foundRange.location != NSNotFound {
-                let glyphRange = layoutManager.glyphRange(forCharacterRange: foundRange, actualCharacterRange: nil)
-                var lineRect = layoutManager.boundingRect(forGlyphRange: glyphRange, in: textContainer)
-                
-                let yPosition = lineRect.origin.y + textContainerInset.height - 8
-                
-                let path = NSBezierPath()
-                path.move(to: NSPoint(x: textContainerInset.width + 20, y: yPosition))
-                path.line(to: NSPoint(x: bounds.width - textContainerInset.width - 20, y: yPosition))
 
-                // White divider
-                NSColor.white.withAlphaComponent(0.3).setStroke()
-                path.lineWidth = 1
+        let text = string as NSString
+        var searchRange = NSRange(location: 0, length: text.length)
+
+        // Line thickness matches the font weight (~1.5pt for 14pt monospace)
+        let lineThickness: CGFloat = 1.5
+
+        while searchRange.location < text.length {
+            let foundRange = text.range(of: "---", options: [], range: searchRange)
+            if foundRange.location == NSNotFound { break }
+
+            // Only draw for "---" on its own line
+            var lineStart = 0
+            var lineEnd = 0
+            text.getLineStart(&lineStart, end: &lineEnd, contentsEnd: nil, for: foundRange)
+            let lineContent = text.substring(with: NSRange(location: lineStart, length: lineEnd - lineStart))
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+
+            if lineContent == "---" {
+                let glyphRange = layoutManager.glyphRange(forCharacterRange: foundRange, actualCharacterRange: nil)
+                let lineRect = layoutManager.boundingRect(forGlyphRange: glyphRange, in: textContainer)
+
+                let yPosition = lineRect.midY + textContainerInset.height
+
+                let path = NSBezierPath()
+                path.move(to: NSPoint(x: textContainerInset.width, y: yPosition))
+                path.line(to: NSPoint(x: bounds.width - textContainerInset.width, y: yPosition))
+
+                NSColor.white.setStroke()
+                path.lineWidth = lineThickness
                 path.stroke()
-                
-                searchRange.location = foundRange.location + foundRange.length
-                searchRange.length = text.length - searchRange.location
-            } else {
-                break
             }
+
+            searchRange.location = foundRange.location + foundRange.length
+            searchRange.length = text.length - searchRange.location
         }
     }
 }

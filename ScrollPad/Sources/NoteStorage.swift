@@ -39,10 +39,10 @@ class NoteStorage {
     
     func load() {
         guard let textView = textView else { return }
-        
+
         // Ensure folder exists
         ensureFolderExists()
-        
+
         if FileManager.default.fileExists(atPath: storageURL.path) {
             do {
                 let content = try String(contentsOf: storageURL, encoding: .utf8)
@@ -54,6 +54,9 @@ class NoteStorage {
         } else {
             textView.string = ""
         }
+
+        // Restyle dividers after loading
+        (textView as? ScrollPadTextView)?.refreshDividerStyling()
     }
     
     // MARK: - Saving
